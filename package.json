@@ -13,6 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "opusscript": "0.0.8",
+    "ytdl-core": "^4.5.0",
+    "ytsearcher": "^1.2.3"
   }
 }
