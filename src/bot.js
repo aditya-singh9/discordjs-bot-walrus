@@ -86,9 +86,7 @@ client.on("message", async (message) => {
         );
       }
     } else if (CMD_NAME === "announce") {
-      console.log(args);
       const msg = args.join(" ");
-      console.log(msg);
       webhookClient.send(msg);
     }
   }
