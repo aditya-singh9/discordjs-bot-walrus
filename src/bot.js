@@ -71,6 +71,8 @@ client.on("message", async (message) => {
       .substring(PREFIX.length)
       .split(/\s+/);
     if (CMD_NAME === "kick") {
+      if (!message.member.hasPermission("KICK_MEMBERS"))
+        return message.reply("You do not have permissions to use this command");
       const user = message.mentions.users.first();
       if (user) {
         const member = message.guild.member(user);
@@ -91,6 +93,8 @@ client.on("message", async (message) => {
         message.reply("You didn't mention the user to kick!");
       }
     } else if (CMD_NAME === "ban") {
+      if (!message.member.hasPermission("BAN_MEMBERS"))
+        return message.reply("You do not have permissions to use this command");
       const user = message.mentions.users.first();
       if (user) {
         const member = message.guild.member(user);
