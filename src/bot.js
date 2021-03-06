@@ -175,6 +175,63 @@ client.on("message", async (message) => {
       Member.roles.remove(role);
       message.channel.send(`${Member.displayName} has been unmuted `);
     }
+
+    if (CMD_NAME === "tmute") {
+      if (!message.member.hasPermission("MUTE_MEMBERS"))
+        return message.reply("You do not have permissions to use this command");
+      const Member =
+        message.mentions.members.first() ||
+        message.guild.members.cache.get(args[0]);
+      const time = args[1];
+      if (!Member) return message.reply("Please mention a valid user");
+      if (!time)
+        return message.reply("Please enter a valid time to mute this user");
+      const role = message.guild.roles.cache.find(
+        (role) => role.name.toLowerCase() === "mutes"
+      );
+      if (!role) {
+        try {
+          message.channel.send(
+            "Missing requirements for mute.\nBut I am making it wait"
+          );
+
+          let muteRole = message.guild.roles.create({
+            data: {
+              name: "mutes",
+              permissions: [],
+            },
+          });
+          message.guild.channels.cache
+            .filter((c) => c.type === "text")
+            .forEach(async (channel, id) => {
+              await channel.createOverwrite(muteRole, {
+                SEND_MESSAGES: false,
+                ADD_REACTIONS: false,
+              });
+            });
+          message.channel.send(
+            "Made the requirements\n Now run the command again"
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      let role2 = message.guild.roles.cache.find(
+        (r) => r.name.toLocaleLowerCase() === "mutes"
+      );
+      if (Member.roles.cache.has(role2.id))
+        return message.channel.send(
+          `${Member.displayName} has already been muted `
+        );
+      Member.roles.add(role2);
+      message.channel.send(`${Member.displayName} has been muted for ${time}`);
+
+      setTimeout(async () => {
+        await Member.roles.remove(role2);
+        message.channel.send(`${Member.displayName} is now unmuted`);
+      }, ms(time));
+    }
+
     //music feature
     switch (CMD_NAME) {
       case "play":
