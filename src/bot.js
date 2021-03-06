@@ -60,6 +60,9 @@ client.on("ready", () => {
 });
 
 client.on("message", async (message) => {
+  if (message.content === "--avatar") {
+    message.reply(message.author.displayAvatarURL());
+  }
   const serverQueue = queue.get(message.guild.id);
   if (message.author.bot) return;
   if (message.content.startsWith(PREFIX)) {
@@ -68,36 +71,110 @@ client.on("message", async (message) => {
       .substring(PREFIX.length)
       .split(/\s+/);
     if (CMD_NAME === "kick") {
-      if (!message.member.hasPermission("KICK_MEMBERS"))
-        return message.reply("You do not have permissions to use that command");
-      if (args.length === 0) return message.reply("Please provide an ID");
-      const member = message.guild.members.cache.get(args[0]);
-      if (member) {
-        member
-          .kick()
-          .then((member) => message.channel.send(`${member} was kicked.`))
-          .catch((err) => message.channel.send("I cannot kick that user :("));
+      const user = message.mentions.users.first();
+      if (user) {
+        const member = message.guild.member(user);
+        if (member) {
+          member
+            .kick("Optional reason that will display in the audit logs")
+            .then(() => {
+              message.reply(`Successfully kicked ${user.tag}`);
+            })
+            .catch((err) => {
+              message.reply("I was unable to kick the member");
+              console.error(err);
+            });
+        } else {
+          message.reply("That user isn't in this guild!");
+        }
       } else {
-        message.channel.send("That member was not found");
+        message.reply("You didn't mention the user to kick!");
       }
     } else if (CMD_NAME === "ban") {
-      if (!message.member.hasPermission("BAN_MEMBERS"))
-        return message.reply("You do not have permissions to use that command");
-      if (args.length === 0) return message.reply("Please provide an ID");
-      try {
-        const user = await message.guild.members.ban(args[0]);
-        message.channel.send("User was banned successfully");
-      } catch (err) {
-        console.log(err);
-        message.channel.send(
-          "An error occured. Either I do not have permissions or the user was not found"
-        );
+      const user = message.mentions.users.first();
+      if (user) {
+        const member = message.guild.member(user);
+        if (member) {
+          member
+            .ban("Optional reason that will display in the audit logs")
+            .then(() => {
+              message.reply(`Successfully banned ${user.tag}`);
+            })
+            .catch((err) => {
+              message.reply("I was unable to ban the member");
+              console.error(err);
+            });
+        } else {
+          message.reply("That user isn't in this guild!");
+        }
+      } else {
+        message.reply("You didn't mention the user to ban");
       }
     } else if (CMD_NAME === "announce") {
       const msg = args.join(" ");
       webhookClient.send(msg);
     }
 
+    if (CMD_NAME === "mute") {
+      if (!message.member.hasPermission("MUTE_MEMBERS"))
+        return message.reply("You do not have permissions to use this command");
+      const Member =
+        message.mentions.members.first() ||
+        message.guild.members.cache.get(args[0]);
+      if (!Member) return message.reply("Please mention a valid user");
+      const role = message.guild.roles.cache.find(
+        (role) => role.name.toLowerCase() === "mutes"
+      );
+      if (!role) {
+        try {
+          message.channel.send(
+            "Missing requirements for mute.\nBut I am making it wait"
+          );
+
+          let muteRole = message.guild.roles.create({
+            data: {
+              name: "mutes",
+              permissions: [],
+            },
+          });
+          message.guild.channels.cache
+            .filter((c) => c.type === "text")
+            .forEach(async (channel, id) => {
+              await channel.createOverwrite(muteRole, {
+                SEND_MESSAGES: false,
+                ADD_REACTIONS: false,
+              });
+            });
+          message.channel.send("Made the requirements");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      let role2 = message.guild.roles.cache.find(
+        (r) => r.name.toLocaleLowerCase() === "mutes"
+      );
+      if (Member.roles.cache.has(role2.id))
+        return message.channel.send(
+          `${Member.displayName} has already been muted `
+        );
+      Member.roles.add(role2);
+      message.channel.send(`${Member.displayName} has been muted `);
+    }
+
+    if (CMD_NAME === "unmute") {
+      if (!message.member.hasPermission("MUTE_MEMBERS"))
+        return message.reply("You do not have permissions to use this command");
+      const Member =
+        message.mentions.members.first() ||
+        message.guild.members.cache.get(args[0]);
+      if (!Member) return message.reply("Please mention a valid user");
+
+      const role = message.guild.roles.cache.find(
+        (r) => r.name.toLocaleLowerCase() === "mutes"
+      );
+      Member.roles.remove(role);
+      message.channel.send(`${Member.displayName} has been unmuted `);
+    }
     //music feature
     switch (CMD_NAME) {
       case "play":
