@@ -16,6 +16,10 @@ To use this code, follow the instructions:
 
 4. Run `npm run start` or `npm run dev` in the project directory
 
-# Notes
+# Note
 
 - Keep in mind all of the role IDs, channel IDs, etc. were all for my test server. You must configure it yourself by changing the IDs to meet your needs.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
