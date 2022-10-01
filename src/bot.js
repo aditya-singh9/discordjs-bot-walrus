@@ -368,34 +368,4 @@ client.on("messageReactionRemove", (reaction, user) => {
   }
 });
 
-// client.on("messageReactionAdd", async (reaction, user) => {
-//   if (reaction.message.partial) await reaction.message.fetch();
-//   if (reaction.partial) await reaction.fetch();
-//   if (user.client) return;
-//   if (!reaction.message.guild) return;
-//   if (reaction.message.id === "814803034352779285") {
-//     if (reaction.emoji.name === "🟠") {
-//       await reaction.message.guild.members.cache
-//         .get(user.id)
-//         .roles.add("814774605381763082");
-//       user.send("You have obtained a role!");
-//     }
-//   }
-// });
-
-// client.on("messageReactionRemove", async (reaction, user) => {
-//   if (reaction.message.partial) await reaction.message.fetch();
-//   if (reaction.partial) await reaction.fetch();
-//   if (user.client) return;
-//   if (!reaction.message.guild) return;
-//   if (reaction.message.id === "814803034352779285") {
-//     if (reaction.emoji.name === "🟠") {
-//       await reaction.message.guild.members.cache
-//         .get(user.id)
-//         .roles.remove("814774605381763082");
-//       user.send("One of your roles has been removed!");
-//     }
-//   }
-// });
-
 client.login(process.env.DISCORDJS_BOT_TOKEN);
