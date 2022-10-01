@@ -33,11 +33,11 @@ client.on("ready", () => {
 
   command(client, "formula help", (message) => {
     message.channel.send(
-      "Please type the formula you want to see.\nEx '--jee formula quadratic'.\nIf you want formulas to be added then contact Conquestor#2983"
+      "Please type the formula you want to see.\nEx '--jee formula quadratic'.\nIf you want formulas to be added, contact Conquestor#2983"
     );
   });
 
-  command(client, ["hi", "hello", "yo", "Yo", "Hello", "Hi"], (message) => {
+  command(client, ["hi", "hello", "yo", "Yo", "Hello", "Hi", ""], (message) => {
     message.channel.send("Yo bro!");
   });
 
@@ -51,7 +51,7 @@ client.on("ready", () => {
   });
 
   command(client, ["cc", "clearchannel"], (message) => {
-    if (message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission("MANAGE_CHANNELS")) {
       message.channel.messages.fetch().then((results) => {
         message.channel.bulkDelete(results);
       });
@@ -83,7 +83,7 @@ client.on("message", async (message) => {
               message.reply(`Successfully kicked ${user.tag}`);
             })
             .catch((err) => {
-              message.reply("I was unable to kick the member");
+              message.reply("I was unable to kick the member, contact the admin for further assistance");
               console.error(err);
             });
         } else {
