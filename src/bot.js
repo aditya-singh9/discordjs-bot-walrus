@@ -24,11 +24,11 @@ const PREFIX = "--";
 client.on("ready", () => {
   console.log(`${client.user.tag} has logged in.`);
   command(client, "formula quadratic", (message) => {
-    message.channel.send("https://i.ibb.co/HVWV6k2/download.png");
+    message.channel.send("https://i.ibb.co/HVWV6k2/download.png"); // IBB isnt the best image host, try using imgur
   });
 
   command(client, "formula ideal gas", (message) => {
-    message.channel.send("https://i.ibb.co/m8ypNrX/download-1.png");
+    message.channel.send("https://i.ibb.co/m8ypNrX/download-1.png"); // IBB isnt the best image host, try using imgur
   });
 
   command(client, "formula help", (message) => {
