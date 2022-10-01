@@ -24,20 +24,20 @@ const PREFIX = "--";
 client.on("ready", () => {
   console.log(`${client.user.tag} has logged in.`);
   command(client, "formula quadratic", (message) => {
-    message.channel.send("https://i.ibb.co/HVWV6k2/download.png");
+    message.channel.send("https://i.ibb.co/HVWV6k2/download.png"); // IBB isnt the best image host, try using imgur
   });
 
   command(client, "formula ideal gas", (message) => {
-    message.channel.send("https://i.ibb.co/m8ypNrX/download-1.png");
+    message.channel.send("https://i.ibb.co/m8ypNrX/download-1.png"); // IBB isnt the best image host, try using imgur
   });
 
   command(client, "formula help", (message) => {
     message.channel.send(
-      "Please type the formula you want to see.\nEx '--jee formula quadratic'.\nIf you want formulas to be added then contact Conquestor#2983"
+      "Please type the formula you want to see.\nEx '--jee formula quadratic'.\nIf you want formulas to be added, contact Conquestor#2983"
     );
   });
 
-  command(client, ["hi", "hello", "yo", "Yo", "Hello", "Hi"], (message) => {
+  command(client, ["hi", "hello", "yo", "Yo", "Hello", "Hi", ""], (message) => {
     message.channel.send("Yo bro!");
   });
 
@@ -51,7 +51,7 @@ client.on("ready", () => {
   });
 
   command(client, ["cc", "clearchannel"], (message) => {
-    if (message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission("MANAGE_CHANNELS")) {
       message.channel.messages.fetch().then((results) => {
         message.channel.bulkDelete(results);
       });
@@ -83,7 +83,7 @@ client.on("message", async (message) => {
               message.reply(`Successfully kicked ${user.tag}`);
             })
             .catch((err) => {
-              message.reply("I was unable to kick the member");
+              message.reply("I was unable to kick the member, contact the admin for further assistance");
               console.error(err);
             });
         } else {
@@ -367,35 +367,5 @@ client.on("messageReactionRemove", (reaction, user) => {
     }
   }
 });
-
-// client.on("messageReactionAdd", async (reaction, user) => {
-//   if (reaction.message.partial) await reaction.message.fetch();
-//   if (reaction.partial) await reaction.fetch();
-//   if (user.client) return;
-//   if (!reaction.message.guild) return;
-//   if (reaction.message.id === "814803034352779285") {
-//     if (reaction.emoji.name === "🟠") {
-//       await reaction.message.guild.members.cache
-//         .get(user.id)
-//         .roles.add("814774605381763082");
-//       user.send("You have obtained a role!");
-//     }
-//   }
-// });
-
-// client.on("messageReactionRemove", async (reaction, user) => {
-//   if (reaction.message.partial) await reaction.message.fetch();
-//   if (reaction.partial) await reaction.fetch();
-//   if (user.client) return;
-//   if (!reaction.message.guild) return;
-//   if (reaction.message.id === "814803034352779285") {
-//     if (reaction.emoji.name === "🟠") {
-//       await reaction.message.guild.members.cache
-//         .get(user.id)
-//         .roles.remove("814774605381763082");
-//       user.send("One of your roles has been removed!");
-//     }
-//   }
-// });
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
